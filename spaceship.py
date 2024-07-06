@@ -258,7 +258,7 @@ class Agent:
         q_expected = self.local_qnetwork(states).gather(1,
                                                         actions)  # get the q_expected by gathering all the Q-values returned by local_qnetwork
         loss = F.mse_loss(q_expected, q_targets)  # calculate the cost function
-        self.optimizer.zero_grad()  # zeroing out the gradient of the optimizer
+        self.optimizer.zero_grad()  # zeroing out the gradient to prevent mixed of gradients in training
         loss.backward()  # backpropagation
         self.optimizer.step()  # update the weight of the network
         soft_update(self.local_qnetwork, self.target_qnetwork,
@@ -275,32 +275,35 @@ def soft_update(local_model, target_model, local_interpolation_parameter):
 agent = Agent(state_size, number_actions)
 
 # Training the DQN agent
-number_episodes = 2000
-maximum_number_timesteps_per_episode = 1000
-epsilon_starting_value = 1.0
-epsilon_ending_value = 0.01
-epsilon_decay = 0.995
+number_episodes = 2000  # total 2000 days to train
+maximum_number_timesteps_per_episode = 1000  # 1000 steps per episode
+epsilon_starting_value = 1.0  # we start with epsilon value of 1
+epsilon_ending_value = 0.01  # the lowest is 0.01
+epsilon_decay = 0.995  # decay by 0.995 every episode
 epsilon = epsilon_starting_value
-rewards_on_100_episodes = deque(maxlen=100)
+rewards_on_100_episodes = deque(maxlen=100)  # we use a deque to store a list of avg award every 100 episodes
 
-for episode in range(1, number_episodes + 1):
+for episode in range(1, number_episodes + 1):  # we loop through 2000 episodes
     state, _ = env.reset()  # reset environment for every episode
-    agent_reward = 0
-    for t in range(0, maximum_number_timesteps_per_episode):
-        action = agent.act(state, epsilon)
-        next_state, reward, done, _, _ = env.step(action)
-        agent.step(state, action, reward, next_state, done)
-        state = next_state
-        agent_reward += reward
-        if done:
+    agent_reward = 0  # reset reward too
+    for t in range(0, maximum_number_timesteps_per_episode):  # loop through every step in an episode
+        action = agent.act(state, epsilon)  # agent decides an action first
+        next_state, reward, done, _, _ = env.step(action)  # after action is made, it receives a reward, a new status whether episode is done or not and ends up in a new state
+        agent.step(state, action, reward, next_state,done)  # then agent tries
+        # to learn by taking every component of an experience
+        # (step() only works if there are 100 experiences,
+        # otherwise, it just adds one more experience to memory
+        state = next_state  # then go to new state
+        agent_reward += reward # accumulate award
+        if done:  # if an episode is done, move on to the next one
             break
-    rewards_on_100_episodes.append(agent_reward)
-    epsilon = max(epsilon_ending_value, epsilon_decay * epsilon)
+    rewards_on_100_episodes.append(agent_reward) # add to deque
+    epsilon = max(epsilon_ending_value, epsilon_decay * epsilon) # update epsilon value
     print('\rEpisode {}\tAverage Score: {:.2f}'.format(episode, np.mean(rewards_on_100_episodes)), end="")
-    if episode % 100 == 0:
+    if episode % 100 == 0:  # print average reward every 100 episodes
         print('\rEpisode {}\tAverage Score: {:.2f}'.format(episode, np.mean(rewards_on_100_episodes)))
     if np.mean(rewards_on_100_episodes) >= 200.0:
         print('\nEnvironment solved in {:d} episodes! \tAverage Score: {:.2f}'.format(episode,
-                                                                                      np.mean(rewards_on_100_episodes)))
-        torch.save(agent.local_qnetwork.state_dict(), 'checkpoint.pth')
+                                                                                      np.mean(rewards_on_100_episodes))) # end when average hits 200
+        torch.save(agent.local_qnetwork.state_dict(), 'checkpoint.pth')  # end training
         break
