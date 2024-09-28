@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaceship Landing AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        h2 {
+            color: #2980b9;
+        }
+        h3 {
+            color: #8e44ad;
+        }
+        pre {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow: auto;
+        }
+        code {
+            background-color: #eaeaea;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .important {
+            color: #c0392b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Spaceship Landing AI</h1>
+
+<h2>Overview</h2>
+<p>This AI program is designed to train a spaceship to land on the moon in a virtual environment using the Gymnasium library. It employs <code>Deep Q-Learning</code> for reinforcement learning to achieve this goal.</p>
+
+<h2>Requirements</h2>
+<p>To run the program, ensure the following Python packages are installed:</p>
+<ul>
+    <li><code>gymnasium</code>: For creating the training environment.</li>
+    <li><code>numpy</code>: For numerical computations and matrix operations.</li>
+    <li><code>torch</code>: For building and training the neural network (PyTorch).</li>
+    <li><code>random</code>: For generating randomness in action selection.</li>
+</ul>
+
+<h2>Architecture</h2>
+<h3>Neural Network</h3>
+<p>The neural network consists of:</p>
+<ul>
+    <li><strong>Input Layer</strong>: Takes an 8-dimensional vector representing the state.</li>
+    <li><strong>Hidden Layers</strong>: Two hidden layers with 64 neurons each, utilizing the <code>ReLU</code> activation function.</li>
+    <li><strong>Output Layer</strong>: Four output neurons representing the possible actions for landing.</li>
+</ul>
+
+<h3>Experience Replay</h3>
+<p>A <code>ReplayMemory</code> class is implemented to store experiences, allowing for experience replay to enhance training efficiency.</p>
+
+<h3>Agent Class</h3>
+<p>The <code>Agent</code> class manages:</p>
+<ul>
+    <li>Local Q-network for action selection.</li>
+    <li>Target Q-network for stable training.</li>
+    <li>Exploration-exploitation trade-off using an epsilon-greedy policy.</li>
+</ul>
+
+<h2>Training</h2>
+<p>The model is trained over <strong>2000 episodes</strong>, each allowing up to <strong>1000 timesteps</strong>. The training process includes:</p>
+<ol>
+    <li>Resetting the environment for each episode.</li>
+    <li>Performing actions and accumulating rewards.</li>
+    <li>Updating the model every four steps.</li>
+    <li>Printing average rewards every 100 episodes.</li>
+    <li>Saving the trained model when the average reward exceeds <strong>200</strong>.</li>
+</ol>
+
+<h2>Usage</h2>
+<p>To run the program, ensure all dependencies are installed and execute the main script. The training progress will be displayed, including average rewards at specified intervals.</p>
+
+<h2>Future Improvements</h2>
+<ul>
+    <li>Experiment with different neural network architectures.</li>
+    <li>Fine-tune hyperparameters for better performance.</li>
+    <li>Implement additional features to enhance training efficiency.</li>
+</ul>
+
+<h2>License</h2>
+<p>This project is licensed under the <strong>MIT License</strong>.</p>
+
+</body>
+</html>
