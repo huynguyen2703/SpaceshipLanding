@@ -3,100 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spaceship Landing AI</title>
+    <title>Lunar Lander DQN Agent</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-            color: #333;
             margin: 0;
             padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
         }
         h1 {
-            color: #2c3e50;
+            text-align: center;
+            color: #4CAF50;
+        }
+        p {
+            text-align: center;
+            margin: 5px 0;
+        }
+        strong {
+            color: #3498DB;
+        }
+        em {
+            color: #7D3C98;
+        }
+        hr {
+            border: 1px solid #E74C3C;
         }
         h2 {
-            color: #2980b9;
+            color: #F39C12;
         }
         h3 {
-            color: #8e44ad;
+            color: #F39C12;
         }
-        pre {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 10px;
-            overflow: auto;
+        h4 {
+            color: #E74C3C;
+        }
+        ul, ol {
+            color: #2E4053;
         }
         code {
-            background-color: #eaeaea;
+            background-color: #e8e8e8;
             padding: 2px 4px;
-            border-radius: 3px;
+            border-radius: 4px;
         }
-        .important {
-            color: #c0392b;
-            font-weight: bold;
+        pre {
+            background-color: #e8e8e8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7D3C98;
         }
     </style>
 </head>
 <body>
 
-<h1>Spaceship Landing AI</h1>
+    <h1>Lunar Lander DQN Agent</h1>
 
-<h2>Overview</h2>
-<p>This AI program is designed to train a spaceship to land on the moon in a virtual environment using the Gymnasium library. It employs <code>Deep Q-Learning</code> for reinforcement learning to achieve this goal.</p>
+    <p>
+        <strong>Author:</strong> Huy Quoc Nguyen <br/>
+        <strong>Class:</strong> CPSC 3500 - Operating Systems
+    </p>
 
-<h2>Requirements</h2>
-<p>To run the program, ensure the following Python packages are installed:</p>
-<ul>
-    <li><code>gymnasium</code>: For creating the training environment.</li>
-    <li><code>numpy</code>: For numerical computations and matrix operations.</li>
-    <li><code>torch</code>: For building and training the neural network (PyTorch).</li>
-    <li><code>random</code>: For generating randomness in action selection.</li>
-</ul>
+    <p>
+        <em>A project implementing a Deep Q-Network agent to land a spacecraft on the moon using reinforcement learning.</em>
+    </p>
 
-<h2>Architecture</h2>
-<h3>Neural Network</h3>
-<p>The neural network consists of:</p>
-<ul>
-    <li><strong>Input Layer</strong>: Takes an 8-dimensional vector representing the state.</li>
-    <li><strong>Hidden Layers</strong>: Two hidden layers with 64 neurons each, utilizing the <code>ReLU</code> activation function.</li>
-    <li><strong>Output Layer</strong>: Four output neurons representing the possible actions for landing.</li>
-</ul>
+    <hr/>
 
-<h3>Experience Replay</h3>
-<p>A <code>ReplayMemory</code> class is implemented to store experiences, allowing for experience replay to enhance training efficiency.</p>
+    <h2>Project Overview</h2>
+    <p>This project demonstrates the use of <strong>Deep Q-Learning</strong> to train an agent that learns to land a spacecraft in the <strong>Lunar Lander</strong> environment.</p>
 
-<h3>Agent Class</h3>
-<p>The <code>Agent</code> class manages:</p>
-<ul>
-    <li>Local Q-network for action selection.</li>
-    <li>Target Q-network for stable training.</li>
-    <li>Exploration-exploitation trade-off using an epsilon-greedy policy.</li>
-</ul>
+    <h3>Key Features:</h3>
+    <ul>
+        <li>Utilizes <strong>reinforcement learning</strong> techniques.</li>
+        <li>Custom neural network architecture for Q-learning.</li>
+        <li>Experience replay buffer for improved learning efficiency.</li>
+        <li>Evaluation of agent performance over multiple episodes.</li>
+    </ul>
 
-<h2>Training</h2>
-<p>The model is trained over <strong>2000 episodes</strong>, each allowing up to <strong>1000 timesteps</strong>. The training process includes:</p>
-<ol>
-    <li>Resetting the environment for each episode.</li>
-    <li>Performing actions and accumulating rewards.</li>
-    <li>Updating the model every four steps.</li>
-    <li>Printing average rewards every 100 episodes.</li>
-    <li>Saving the trained model when the average reward exceeds <strong>200</strong>.</li>
-</ol>
+    <h2>Technologies Used</h2>
+    <ul>
+        <li><strong>Python</strong>: Core programming language.</li>
+        <li><strong>PyTorch</strong>: For building and training neural networks.</li>
+        <li><strong>OpenAI Gym</strong>: For the Lunar Lander environment.</li>
+        <li><strong>Numpy</strong>: For numerical computations.</li>
+    </ul>
 
-<h2>Usage</h2>
-<p>To run the program, ensure all dependencies are installed and execute the main script. The training progress will be displayed, including average rewards at specified intervals.</p>
+    <h2>Setup and Usage</h2>
 
-<h2>Future Improvements</h2>
-<ul>
-    <li>Experiment with different neural network architectures.</li>
-    <li>Fine-tune hyperparameters for better performance.</li>
-    <li>Implement additional features to enhance training efficiency.</li>
-</ul>
+    <h3>Installation</h3>
+    <p>To set up the project, ensure you have the following dependencies installed:</p>
+    <pre><code>pip install gym
+pip install torch
+pip install numpy
+    </code></pre>
 
-<h2>License</h2>
-<p>This project is licensed under the <strong>MIT License</strong>.</p>
+    <h3>Training the Agent</h3>
+    <p>The agent is trained over a specified number of episodes:</p>
+    <pre><code>number_episodes = 2000
+maximum_number_timesteps_per_episode = 1000
+    </code></pre>
+
+    <h2>Sample Output</h2>
+    <p>After training, the agent successfully lands the spacecraft with an average score exceeding 200 over 100 episodes.</p>
+
+    <h2>Future Improvements</h2>
+    <ul>
+        <li><strong>Hyperparameter Tuning</strong>: Experiment with different learning rates and architectures.</li>
+        <li><strong>Improved Visualization</strong>: Add visual output of the agent's performance.</li>
+        <li><strong>Multi-Agent Training</strong>: Explore training multiple agents for competitive learning.</li>
+    </ul>
+
+    <hr/>
+    <div class="footer">
+        <p>Made with ❤️ by Huy Quoc Nguyen</p>
+    </div>
 
 </body>
 </html>
